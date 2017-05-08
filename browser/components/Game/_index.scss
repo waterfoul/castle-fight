@@ -1,0 +1,69 @@
+.game-component {
+  .game-board {
+	$rowCount: 16;
+	$columnCount: 47;
+	$size: 32px;
+	$border: 1px;
+
+	display: grid;
+	$cols: '';
+	@for $i from 1 through $columnCount {
+	  $cols: $cols + ' 1fr'
+	}
+	$rows: '';
+	@for $i from 1 through $rowCount {
+	  $rows: $rows + ' 1fr'
+	}
+	grid-template-columns: #{$cols};
+	grid-template-rows: #{$rows};
+
+	border-left: $border solid black;
+	border-top: $border solid black;
+	width: $columnCount * ($size + $border);
+	height: $rowCount * ($size + $border);
+
+	@for $i from 0 through $rowCount {
+	  .row#{$i} {
+		grid-row-start: $i + 1;
+	  }
+	}
+
+	@for $j from 0 through $columnCount {
+	  .col#{$j} {
+		grid-column-start: $j + 1;
+	  }
+	}
+
+	.background {
+	  width: $size;
+	  height: $size;
+	  border-right: $border solid black;
+	  border-bottom: $border solid black;
+	  background-repeat: no-repeat;
+	  background-size: $size $size;
+
+	  &.G {
+		background: url('/static/board/background/grass.png');
+	  }
+	  &.R {
+		background: url('/static/board/background/road.png');
+		background-size: $size $size + 1;
+
+		&.row4, &.row10 {
+		  //border-bottom-color: transparent;
+		  border-bottom: 0;
+		  height: $size + 1;
+		}
+	  }
+	  &.F {
+		background: url('/static/board/background/forest.png');
+	  }
+	  &.W {
+		background: url('/static/board/background/water.png');
+	  }
+	  &.A {
+		background: url('/static/board/background/wall.png');
+	  }
+	}
+  }
+}
