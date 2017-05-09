@@ -1,3 +1,5 @@
+// @flow
+
 import { logger } from './utils/logger';
 import express from 'express';
 import http from 'http';
@@ -8,7 +10,7 @@ import bodyParser from 'body-parser';
 import { resolve } from 'path';
 import args from './utils/args';
 import db from './db';
-import socket from './socket';
+import { svr } from './socket';
 import { gameTick } from './gameTick';
 
 const app = express()
@@ -54,7 +56,7 @@ const app = express()
 
 db.didSync.then(() => {
 	const server = http.createServer(app);
-	socket.svr.installHandlers(server, { prefix: '/socket' });
+	svr.installHandlers(server, { prefix: '/socket' });
 	server.listen(args.port, () => {
 		const { address, port } = server.address();
 		const host = address === '::' ? 'localhost' : address;

@@ -5,9 +5,7 @@ import Room from './db/models/room';
 import { logger } from './utils/logger';
 import { gameStateReducer, gameStateSync } from '../common/gameState';
 import { updateAll } from '../common/gameState/money';
-import { sendTo } from './socket';
-
-const gameCache = {};
+import { sendTo, gameCache } from './socket';
 
 function sendEvent(idx, action) {
 	gameCache[idx].gameState = gameStateReducer(gameCache[idx].gameState, action);
@@ -16,7 +14,7 @@ function sendEvent(idx, action) {
 
 let commitPromise = Promise.resolve();
 
-function commitGameCache(): Promise<any> {
+export function commitGameCache(): Promise<any> {
 	return commitPromise.then(() => {
 		const promises = [];
 		// eslint-ignore-next-line for-in
@@ -31,7 +29,7 @@ function commitGameCache(): Promise<any> {
 }
 
 let tickCount = 0;
-function gameTick() {
+export function gameTick() {
 	tickCount++;
 	// eslint-ignore-next-line for-in
 	for(const i in gameCache) {
@@ -62,9 +60,3 @@ Room.findAll({
 		gameCache[rooms[i].id] = rooms[i];
 	}
 });
-
-module.exports = {
-	gameTick,
-	gameCache,
-	commitGameCache
-};

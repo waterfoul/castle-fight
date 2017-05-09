@@ -1,10 +1,10 @@
 // @flow
 
-const express = require('express');
-const Room = require('../db/models/room');
-const User = require('../db/models/user');
-const { sendTo, sendAll } = require('../socket');
-const { gameCache, commitGameCache } = require('../gameTick');
+import express from 'express';
+import Room from '../db/models/room';
+import User from '../db/models/user';
+import { sendTo, sendAll, gameCache } from '../socket';
+import { commitGameCache } from '../gameTick';
 
 module.exports = (new express.Router('api/room'))
 	.get('/', (req, res, next) => (

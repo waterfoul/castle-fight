@@ -1,82 +1,91 @@
-const sockjs = require('sockjs');
-const { logger } = require('./utils/logger');
-const Room = require('./db/models/room');
-//const { gameStateReducer } = require('../common/gameState');
+// @flow
+
+import sockjs from 'sockjs';
+import { logger } from './utils/logger';
+import { gameStateReducer, gameStateSync } from '../common/gameState';
+import { BUILD } from '../common/gameState/buildings';
+import { authKeys } from './api/auth';
+
+export const gameCache = {};
 
 // This holds the clients connected to each room
 const rooms = {};
-// This contains the update promises for each room, ensuring that only one update is in progress for each room at a time
-const roomUpdate = {};
 
 let allClients = [];
 
-const svr = sockjs.createServer({
-  log: logger.log.bind(logger)
+const allowedSeatActions = [
+	BUILD
+];
+
+export const svr = sockjs.createServer({
+	log: logger.log.bind(logger)
 });
 
 function removeFrom(client, room) {
-  if (room !== -1) {
-    rooms[room] = rooms[room] || [];
-    rooms[room] = rooms[room].filter((ele) => ele !== client);
-  }
+	if (room !== -1) {
+		rooms[room] = rooms[room] || [];
+		rooms[room] = rooms[room].filter((ele) => ele !== client);
+	}
 }
 
-function sendTo(roomNum, message, excludedClient) {
-  if (rooms[roomNum]) {
-    rooms[roomNum].forEach((client) => {
-      if (client !== excludedClient) {
-        client.write(message);
-      }
-    });
-  }
+export function sendTo(roomNum, message, excludedClient) {
+	if (rooms[roomNum]) {
+		rooms[roomNum].forEach((client) => {
+			if (client !== excludedClient) {
+				client.write(message);
+			}
+		});
+	}
 }
 
-function sendAll(message) {
-  logger.info('Broadcasting message to all clients', { message });
-  allClients.forEach((client) => client.write(message));
+export function sendAll(message) {
+	logger.info('Broadcasting message to all clients', { message });
+	allClients.forEach((client) => client.write(message));
 }
 
 svr.on('connection', function(conn) {
-  let roomNum = -1;
-  allClients.push(conn);
+	let roomNum = -1;
+	let user = null;
+	allClients.push(conn);
+	// parseCookie(svr.upgradeReq, null, function(err) {
+	// 	var sessionID = svr.upgradeReq.cookies['sid'];
+	// 	store.get(sessionID, function(err, session) {
+	// 		console.log('session', session)
+	// 	});
+	// });
 
-  conn.on('data', function(message) {
-    const data = JSON.parse(message);
+	conn.on('data', function(message) {
+		const data = JSON.parse(message);
 
-    if (data.body === 'connect') {
-      removeFrom(conn, roomNum);
+		if (data.body === 'connect') {
+			removeFrom(conn, roomNum);
 
-      roomNum = data.room;
+			roomNum = data.room;
 
-      rooms[roomNum] = rooms[roomNum] || [];
-      rooms[roomNum].push(conn);
-    } else if (roomNum === data.room) {
-      rooms[roomNum] = rooms[roomNum] || [];
+			rooms[roomNum] = rooms[roomNum] || [];
+			rooms[roomNum].push(conn);
 
-      sendTo(roomNum, message, conn);
+			conn.write(JSON.stringify({
+				room: data.room,
+				body: gameStateSync(gameCache[data.room].gameState)
+			}))
+		} if(data.body.action === 'authenticate') {
+			user = authKeys[data.body.authKey];
+			delete authKeys[data.body.authKey];
+		} else if (roomNum === data.room) {
+			rooms[roomNum] = rooms[roomNum] || [];
 
-      const update = roomUpdate[roomNum] || Promise.resolve();
+			if (allowedSeatActions.indexOf(data.body.type) !== -1) {
+				const game = gameCache[data.room];
+				if(game[data.body.seat].id === user.id) {
+					game.gameState = gameStateReducer(game.gameState, data.body);
+				}
+			}
+		}
+	});
 
-      roomUpdate[roomNum] = update.then(() => {
-        return Room.findById(data.room).then((room) => {
-          room.gameState = gameStateReducer(room.gameState, data.body);
-
-          return room.save().then(() => {
-            roomUpdate[roomNum] = null;
-          });
-        }).catch((e) => logger.error('Failed to update room via socket', data, e));
-      });
-    }
-  });
-
-  conn.on('close', function() {
-    removeFrom(conn, roomNum);
-    allClients = allClients.filter((ele) => ele !== conn);
-  });
+	conn.on('close', function() {
+		removeFrom(conn, roomNum);
+		allClients = allClients.filter((ele) => ele !== conn);
+	});
 });
-
-module.exports = {
-  svr,
-  sendTo,
-  sendAll
-};

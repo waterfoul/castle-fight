@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
+// @flow
+
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { sit } from '../../reducers/room';
+import { Build } from './Build';
 
 const TakeSeat = connect(
-	({}) => ({}),
+	null,
 	(dispatch, {seat}) => ({sit: () => dispatch(sit(seat))})
 )(({sit, userIsSeated}) => {
 	return (
@@ -24,6 +27,7 @@ export const Seat = connect(
 			{room[seat] ? <div>
 				{room[seat].name}
 				<div> {room.gameState.money && room.gameState.money[seat] || 0} G </div>
+				<Build/>
 			</div> : (room.started ? '' : <TakeSeat seat={seat} userIsSeated={userIsSeated}/>)}
 		</div>
 	);

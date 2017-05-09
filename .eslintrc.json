@@ -19,6 +19,7 @@
 	"flowtype/boolean-style": [
 	  2,
 	  "bool"
-	]
+	],
+	"react/prop-types": 0
   }
 }
