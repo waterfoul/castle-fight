@@ -25,7 +25,7 @@ sock.onmessage = function(e) {
 
 	if (data.fullUpdate && roomList) {
 		store.dispatch(fetchList());
-	} else if (room && data.room === room.id) {
+	} else if (room && data.room == room.id) {
 		if (data.update) {
 			store.dispatch(fetch(room.id));
 		} else {

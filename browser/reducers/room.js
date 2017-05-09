@@ -1,3 +1,5 @@
+// @flow
+
 import axios from 'axios';
 import { send } from '../socket';
 import { gameStateReducer } from '../../common/gameState';

@@ -21,7 +21,10 @@ export const Seat = connect(
 )(({room, seat, userIsSeated}) => {
 	return (
 		<div>
-			{room[seat] ? room[seat].name : (room.started ? '' : <TakeSeat seat={seat} userIsSeated={userIsSeated}/>)}
+			{room[seat] ? <div>
+				{room[seat].name}
+				<div> {room.gameState.money && room.gameState.money[seat] || 0} G </div>
+			</div> : (room.started ? '' : <TakeSeat seat={seat} userIsSeated={userIsSeated}/>)}
 		</div>
 	);
 });

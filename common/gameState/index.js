@@ -1,9 +1,24 @@
-const { combineReducers } = require('redux');
+// @flow
 
-const gameStateReducer = combineReducers({
-	money: require('./money').money
+import { combineReducers } from 'redux';
+import { money } from './money';
+
+export const GAME_STATE_SYNC = 'GAME_STATE_SYNC';
+
+const combined = combineReducers({
+	money
 });
 
-module.exports = {
-	gameStateReducer
+export const gameStateReducer = (state = {}, action) => {
+	switch (action.type) {
+		case GAME_STATE_SYNC:
+			return action.gameState;
+		default:
+			return combined(state, action);
+	}
 };
+
+export const gameStateSync = (gameState) => ({
+	type: GAME_STATE_SYNC,
+	gameState
+});

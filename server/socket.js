@@ -1,5 +1,5 @@
 const sockjs = require('sockjs');
-const logger = require('./utils/logger');
+const { logger } = require('./utils/logger');
 const Room = require('./db/models/room');
 //const { gameStateReducer } = require('../common/gameState');
 

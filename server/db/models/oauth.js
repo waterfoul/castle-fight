@@ -1,9 +1,9 @@
 'use strict';
 
-const Sequelize = require('sequelize');
-const db = require('..');
-const User = require('./user');
-const logger = require('../../utils/logger');
+import Sequelize from 'sequelize';
+import db from '..';
+import User from './user';
+import { logger } from '../../utils/logger';
 
 const OAuth = db.define('oauth', {
   uid: Sequelize.STRING,

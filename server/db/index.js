@@ -2,7 +2,7 @@
 const debugSQL = require('debug')('sql'); // DEBUG=sql
 const chalk = require('chalk');
 const Sequelize = require('sequelize');
-const logger = require('../utils/logger');
+import { logger } from '../utils/logger';
 
 const name = (process.env.DATABASE_NAME || 'castle-fight');
 

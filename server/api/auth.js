@@ -1,10 +1,10 @@
-const passport = require('passport');
-const args = require('../utils/args');
-const logger = require('../utils/logger');
+import passport from 'passport';
+import args from '../utils/args';
+import { logger } from '../utils/logger';
 
-const User = require('../db/models/user');
-const OAuth = require('../db/models/oauth');
-const express = require('express');
+import User from '../db/models/user';
+import OAuth from '../db/models/oauth';
+import express from 'express';
 
 const auth = new express.Router();
 

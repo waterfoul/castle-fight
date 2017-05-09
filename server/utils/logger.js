@@ -1,7 +1,7 @@
 const winston = require('winston');
 const args = require('./args');
 
-const logger = new winston.Logger({
+export const logger = new winston.Logger({
   transports: [
     new (winston.transports.Console)({
       prettyPrint: true,
@@ -11,5 +11,3 @@ const logger = new winston.Logger({
     }),
   ],
 });
-
-module.exports = logger;

@@ -1,7 +1,8 @@
-import axios from 'axios';
+// @flow
 
 //actions
 export const UPDATE_VALUE = 'MONEY_UPDATE_VALUE';
+export const UPDATE_ALL = 'MONEY_UPDATE_ALL';
 
 const initialState = {
 	Red1: 100,
@@ -15,23 +16,30 @@ const initialState = {
 };
 
 //reducer
-const money = (state = initialState, action) => {
+export const money = (state = initialState, action) => {
 	switch (action.type) {
 		case UPDATE_VALUE:
-			return Object.assign({}, state, {[action.seat]: newValue});
+			return Object.assign({}, state, {[action.seat]: state[action.seat] + action.delta});
+		case UPDATE_ALL: {
+			const newState = Object.assign({}, state);
+			// eslint-ignore-next-line no-console
+			for (const i in newState) {
+				newState[i] += action.delta;
+			}
+			return newState;
+		}
 		default:
 			return state;
 	}
 };
 
 //action creators
-const updateMoney = (seat, newValue) => ({
+export const updateMoney = (seat, delta) => ({
 	type: UPDATE_VALUE,
 	seat,
-	newValue
+	delta
 });
-
-module.exports = {
-	money,
-	updateMoney
-};
+export const updateAll = (delta) => ({
+	type: UPDATE_ALL,
+	delta
+});

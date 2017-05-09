@@ -7,5 +7,8 @@
 /browser/static/index.css
 /browser/static/index.css.map
 
+/index.js
+/index.js.map
+
 .DS_Store
 
