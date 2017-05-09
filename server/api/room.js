@@ -71,6 +71,7 @@ module.exports = (new express.Router('api/room'))
 			.catch(next)
 	})
 	.post('/:id/sit/:seat', (req, res, next) => {
+		// TODO: This breaks things, why?
 		const update = {};
 		update[req.params.seat + 'Id'] = req.user.id;
 
@@ -95,6 +96,7 @@ module.exports = (new express.Router('api/room'))
 			.catch(next);
 	})
 	.post('/:id/start', (req, res, next) => {
+		// TODO: This breaks things, why?
 
 		return commitGameCache().then(() =>
 			Room.update(
