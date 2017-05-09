@@ -76,12 +76,17 @@
 	}
 
 	.building {
+
 	  &.space1 {
 		background: url('/static/buildings/space1/building.png');
 	  }
 	}
 
 	.unit {
+	  &.Blue1, &.Blue2, &.Blue3, &.Blue4 {
+		transform:scaleX(-1);
+	  }
+
 	  &.space1 {
 		background: url('/static/buildings/space1/unit.png');
 	  }

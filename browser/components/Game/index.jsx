@@ -66,13 +66,13 @@ class GameComponent extends Component {
 
 		return this.props.room && (
 				<div id="game" className="container-fluid game-component">
-					<div className="col-md-1">
+					<div className="col-md-1 col-sm-1">
 						<Seat seat="Red1" userIsSeated={userIsSeated}/>
 						<Seat seat="Red2" userIsSeated={userIsSeated}/>
 						<Seat seat="Red3" userIsSeated={userIsSeated}/>
 						<Seat seat="Red4" userIsSeated={userIsSeated}/>
 					</div>
-					<div className="col-md-10">
+					<div className="col-md-10 col-sm-10">
 						<div className="game-board">
 							{board.map((row, i) => {
 								return row.split('').map((col, j) => {
@@ -105,7 +105,7 @@ class GameComponent extends Component {
 							))}
 						</div>
 					</div>
-					<div className="col-md-1">
+					<div className="col-md-1 col-sm-10">
 						<div className="pull-right">
 							<Seat seat="Blue1" userIsSeated={userIsSeated}/>
 							<Seat seat="Blue2" userIsSeated={userIsSeated}/>

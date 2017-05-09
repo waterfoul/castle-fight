@@ -76,7 +76,7 @@
 		"dev": "NODE_ENV=development concurrently --kill-others --prefix \"[{name}]\" --names \"JS(S),JS(B),SERVE,  CSS\" -c \"bgBlue.bold.black,bgBlue.bold.black,bgGreen.bold.black,bgBlack.bold.white\" \"npm --silent run build-js-watch-server\" \"npm --silent run build-js-watch-browser\" \"npm --silent run start-dev\" \"npm --silent run build-css-watch\"",
 		"test": "mocha --compilers js:babel-register browser/**/*.test.js browser/**/*.test.jsx server/**/*.test.js common/**/*.test.js browser/**/**/*.test.js",
 		"test-watch": "npm --silent run test -- --watch",
-		"seed": "node server/db/seed.js",
+		"seed": "node seed.js",
 		"heroku-prebuild": "./bin/heroku-prebuild.sh",
 		"lint": "eslint --ext js,jsx .",
 		"ci": "npm --silent run lint -- --quiet && npm --silent run test",

@@ -43,6 +43,7 @@ function gameTick() {
 				sendEvent(i, updateAll(10));
 				// TODO: Batch these
 				if(gameCache[i].gameState.units) {
+
 					sendEvent(i, moveUnits(gameCache[i].gameState.units.map((u) => {
 						if (roadRows.indexOf(u.row) === -1) {
 							const dist = roadRows

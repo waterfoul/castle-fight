@@ -78,7 +78,8 @@ module.exports = [
 	}),
 	disableServer ? {} : Object.assign({}, baseConfig, {
 		entry: {
-			'index.js': path.resolve(__dirname, 'server', 'index.js')
+			'index.js': path.resolve(__dirname, 'server', 'index.js'),
+			'seed.js': path.resolve(__dirname, 'server', 'db', 'seed.js')
 		},
 		target: "node",
 		externals: [nodeExternals()],
