@@ -11,7 +11,6 @@ import { resolve } from 'path';
 import args from './utils/args';
 import db from './db';
 import { svr } from './socket';
-import { gameTick } from './gameTick';
 
 const app = express()
 
@@ -63,5 +62,4 @@ db.didSync.then(() => {
 		const urlSafeHost = host.includes(':') ? `[${host}]` : host;
 		logger.info(`Listening on http://${urlSafeHost}:${port}`);
 	});
-	gameTick()
 }).catch((e) => logger.error('Failed to start server', e));

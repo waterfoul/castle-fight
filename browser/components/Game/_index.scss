@@ -76,9 +76,14 @@
 	}
 
 	.building {
-
 	  &.space1 {
 		background: url('/static/buildings/space1/building.png');
+	  }
+	}
+
+	.unit {
+	  &.space1 {
+		background: url('/static/buildings/space1/unit.png');
 	  }
 	}
   }

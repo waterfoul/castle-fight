@@ -97,6 +97,12 @@ class GameComponent extends Component {
 									className={`row${building.row} col${building.col} building ${building.type} ${building.seat}`}
 								/>
 							))}
+							{this.props.room && this.props.room.gameState && this.props.room.gameState.units && this.props.room.gameState.units.map((unit, i) => (
+								<div
+									key={i}
+									className={`row${unit.row} col${unit.col} unit ${unit.type} ${unit.seat}`}
+								/>
+							))}
 						</div>
 					</div>
 					<div className="col-md-1">

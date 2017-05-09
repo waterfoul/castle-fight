@@ -3,11 +3,13 @@
 import { combineReducers } from 'redux';
 import { money } from './money';
 import { buildings } from './buildings';
+import { units } from './units';
 
 export const GAME_STATE_SYNC = 'GAME_STATE_SYNC';
 
 const combined = combineReducers({
 	money,
+	units,
 	buildings
 });
 
